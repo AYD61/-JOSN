@@ -30,7 +30,7 @@
 			.center {
 				width: 1000px;
 				margin: 0 auto;
-                                padding-bottom: 100px;
+				padding-bottom: 100px;
 			}
 
 			h1 {
@@ -157,7 +157,7 @@
 			</div>
 			<h1>新闻列表</h1>
 			<div class="search">
-				<input type="text" name="" id="search_input" value=""  oninput="search()"/>
+				<input type="text" name="" id="search_input" value="" oninput="search()"/>
 				<!-- <input type="button" name="" id="search" value="搜索" onclick="search()" /> -->
 				<img src="img/SS.png" alt="搜索" onclick="search()" id="search">
 			</div>
@@ -192,14 +192,17 @@
 						if (item.id == id) {
 							$("#UserName").html("欢迎您：<a href='User.html'>" + item.name + "</a>");
 							$("#User").attr("href", "User.html");
+							$("#fanhui").html("退出登录");
+							$("#news").show();
 						}
 					})
 				})
-				$("#fanhui").html("退出登录");
+				
 			} else {
 				$("#UserName").html("<a href='index.html'>未登录</a>");
 				$("#User").attr("href", "index.html");
 				$("#fanhui").html("返回登录");
+				$("#news").hide();
 			}
 
 
