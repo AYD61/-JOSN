@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>个人中心</title>
+		<link rel="stylesheet" href="css/open.css">
+		<style type="text/css">
+			html {
+				height: 100%;
+			}
+
+			body {
+				background: url(img/body_bg.jpg) center bottom no-repeat #d5e9ea;
+				min-height: 355px;
+				height: 92%;
+				font-size: 20px;
+			}
+
+			.center {
+				width: 460px;
+				margin: 0 auto;
+				padding: 25px 20px;
+				padding-top: 1px;
+				background-color: #fff;
+			}
+
+			.center table {
+				margin: 0 auto;
+				margin-left: 100px;
+			}
+
+			h1 {
+				font-size: 35px;
+				text-align: center;
+				font-weight: normal;
+			}
+
+			.exit {
+				cursor: pointer;
+				padding: 5px 10px;
+				font-size: 18px;
+				width: 92px;
+				height: 34px;
+				margin: 0 auto;
+				margin-top: 20px;
+				line-height: 34px;
+				text-align: center;
+				background-color: red;
+				color: #fff;
+				border-radius: 50px;
+
+			}
+
+			#fanhui {
+				display: block;
+				width: 230px;
+				height: 50px;
+				margin-top: 50px;
+				margin-bottom: 50px;
+				background: url(img/JT.png) 30px 12px no-repeat;
+				background-color: #fff;
+				text-decoration: none;
+				border-radius: 50px;
+				line-height: 50px;
+				color: #000;
+				text-align: center;
+			}
+			.conn{
+				width: 1000px;
+				min-width: 710px;
+				margin: 0 auto;
+			}
+		</style>
+		<script src="js/jquery-3.3.1.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="conn">
+			<a href="News_List.html" id="fanhui">返回新闻列表</a>
+			<div class="center">
+				<h1>用户个人信息</h1>
+				<table border="0" cellspacing="0" cellpadding="5">
+					<tr>
+						<td>账号：</td>
+						<td id="id1"></td>
+					</tr>
+					<tr>
+						<td>名字：</td>
+						<td id="name1"></td>
+					</tr>
+					<tr>
+						<td>性别：</td>
+						<td id="sex1"></td>
+					</tr>
+				</table>
+
+				<div class="exit">退出登录</div>
+			</div>
+		</div>
+		<div id="open">
+			<div id="con">
+				<p class="bt">退出成功</p>
+				<span class="news_tj" id="qued">确定</span>
+			</div>
+		</div>
+
+	</body>
+	<script type="text/javascript">
+		$(function() {
+			var id = sessionStorage.getItem('id');
+			$.getJSON("data.json", "", function(data) {
+				$.each(data.user, function(i, item) {
+					if (item.id == id) {
+						$("#id1").html(item.id);
+						$("#name1").html(item.name);
+						$("#sex1").html(item.sex);
+					}
+				})
+			})
+
+			$("#open").hide();
+			$(".exit").click(function() {
+				sessionStorage.clear();
+				$("#open").fadeIn(500);
+				$("#con").addClass("show");
+			})
+
+			$("#qued").click(function() {
+				window.location.href = "index.html";
+			})
+		})
+	</script>
+</html>

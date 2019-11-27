@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>新闻列表</title>
+		<link rel="stylesheet" type="text/css" href="css/open.css" />
+		<link rel="stylesheet" type="text/css" href="css/ts.css"/>
+		<script src="js/jquery-3.3.1.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/ts.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			html {
+				height: 100%;
+				margin: 0;
+				padding: 0;
+			}
+
+			body {
+				background: #d5e9ea;
+				height: 100%;
+				font-size: 20px;
+				margin: 0;
+				padding: 0;
+			}
+
+			a {
+				color: #000;
+				text-decoration: none;
+			}
+
+			.center {
+				width: 1000px;
+				margin: 0 auto;
+			}
+
+			h1 {
+				text-align: center;
+				font-weight: normal;
+			}
+
+			.nav {
+				overflow: hidden;
+				padding-top: 50px;
+			}
+
+			.UserName {
+				float: right;
+				height: 79px;
+				line-height: 79px;
+			}
+
+			#UserName {
+				margin-right: 20px;
+				position: relative;
+				top: -15px;
+			}
+
+			#User img {
+				height: 50px;
+			}
+
+			#list a {
+				cursor: pointer;
+				color: #000;
+				text-decoration: none;
+			}
+
+			.key {
+				color: red;
+			}
+
+			.search {
+				text-align: center;
+			}
+
+			#search_input {
+				border: none;
+				outline: none;
+				border-radius: 50px;
+				font-size: 20px;
+				padding: 10px 20px;
+				padding-right: 61px;
+				width: 519px;
+				margin-left: 51px;
+			}
+
+			#search {
+				position: relative;
+				left: -60px;
+				top: 9px;
+				cursor: pointer;
+				height: 30px;
+				padding-left: 10px;
+				border-left: rgba(0, 0, 0, 0.5) 1px solid;
+			}
+
+			#lists,
+			#news {
+				width: 560px;
+				margin: 0 auto;
+				margin-top: 10px;
+			}
+
+			#news {
+				margin-top: 0;
+				width: 520px;
+				text-align: center;
+				cursor: pointer;
+				user-select: none;
+			}
+
+			#news:hover {
+				background-color: greenyellow;
+			}
+
+			#lists p {
+				margin: 0;
+			}
+
+			#lists a,
+			#news {
+				line-height: 50px;
+				padding: 0 20px;
+				display: block;
+				background-color: #fff;
+				transition: all 0.5s;
+			}
+
+			#lists a:hover {
+				background-color: rgb(220, 220, 220);
+			}
+			#fanhui {
+				display: inline-block;
+				width: 230px;
+				height: 50px;
+				background: url(img/JT.png) 30px 12px no-repeat;
+				background-size: 16px;
+				text-align: center;
+				line-height: 50px;
+				text-decoration: none;
+				font-size: 20px;
+				border-radius: 50px;
+				background-color: #fff;
+				color: #000;
+			}
+		</style>
+		
+	</head>
+	<body>
+		<div class="center">
+			<div class="nav">
+				<a href="index.html" id="fanhui" onclick="fanhui()">返回登录</a>
+				<span class="UserName">
+					<span id="UserName"></span>
+					<a href="" id="User"><img src="img/user.png"></a>
+				</span>
+			</div>
+			<h1>新闻列表</h1>
+			<div class="search">
+				<input type="text" name="" id="search_input" value=""/>
+				<!-- <input type="button" name="" id="search" value="搜索" onclick="search()" /> -->
+				<img src="img/SS.png" alt="搜索" onclick="search()" id="search">
+			</div>
+			<div id="list">
+				<div id="lists"></div>
+				<div id="news">发布+</div>
+			</div>
+		</div>
+
+		<div id="open">
+			<div id="con">
+				<p class="bt">添加新闻</p>
+				标题：<input type="text" id="news_input" class="news_input">
+				<!-- <br>
+				内容：<input type="" name="" id="" value="" class="news_input" /> -->
+				<br>
+				<span class="news_tj">添加</span>
+			</div>
+		</div>
+		
+	</body>
+
+
+	<script type="text/javascript">
+		$(function() {
+
+			//获取用户ID显示名字  退出登录和返回登录
+			var id = sessionStorage.getItem('id');
+			if (id) { //判断id是否存在   !id是不存在
+				$.getJSON("data.json", "", function(data) {
+					$.each(data.user, function(i, item) {
+						if (item.id == id) {
+							$("#UserName").html("欢迎您：<a href='User.html'>" + item.name + "</a>");
+							$("#User").attr("href", "User.html");
+						}
+					})
+				})
+				$("#fanhui").html("退出登录");
+			} else {
+				$("#UserName").html("<a href='index.html'>未登录</a>");
+				$("#User").attr("href", "index.html");
+				$("#fanhui").html("返回登录");
+			}
+
+
+			//输出新闻标题
+			var list = document.getElementById("lists");
+			$.getJSON("data.json", "", function(data) { //使用$.each方法遍历返回的数据
+				$.each(data.news, function(i, item) {
+					if (i < 6) {
+						var pn = document.createElement("p");
+						pn.innerHTML = "<a href='New_1.html' id='" + item.id + "' onclick='news(" + item.id + ")'>" + item.title +
+							"</a>";
+						list.appendChild(pn);
+					}
+				})
+			})
+
+			//点击发布弹窗
+			$("#open").hide();
+			$("#news").click(function() {
+				$("#open").fadeIn(500);
+				$("#con").addClass("show");
+			})
+			//点击添加 新闻消失弹窗
+			var listss = $("#lists")
+			$(".news_tj").click(function() {
+				var news_input = $("#news_input").val();
+				if (news_input) {
+					// var pn = document.createElement("p");//js创建节点
+					// pn.innerHTML = "<a href='#1'>" + news_input + "</a>";
+					// list.appendChild(pn);
+					var p = $("<p><a href='#1'>" + news_input + "</a></p>");//JQ创建节点
+					listss.append(p);
+					p.hide();
+					p.slideDown(500);
+					ts("添加成功");
+				} else {
+					ts("标题为空，添加失败")
+				}
+				$("#open").fadeOut(500);
+				$("#con").removeClass("show");
+			})
+			
+			//自动获取焦点
+			$("#search_input").focus();
+
+		})
+		//点击List里的a传输id=i;
+		function news(i) {
+			sessionStorage.setItem('Newsid', i);
+		}
+
+		//搜索并高亮显示关键字
+		function search() {
+			var ss = $("#lists a");
+			// var arr1 = "";
+			// var search_input = $("#search_input").val();
+			// $('#search_input').keyup(function(){   //键盘按键离开时执行
+			// ss.hide().filter(":contains('" + (search_input) + "')").show();
+			// }).keyup();
+
+			var search_input = $('#search_input').val(); //获取你输入的关键字；
+			clearSelection(); //先清空一下上次高亮显示的内容；
+			if (search_input != "") {
+				var regExp = new RegExp(search_input, 'g'); //创建正则表达式，g表示全局的，如果不用g，则查找到第一个就不会继续向下查找了；
+				$('#lists a').each(function(i) { //遍历文章；
+					var html = $(this).html();
+					var newHtml = html.replace(regExp, '<span class="key" >' + search_input + '</span>'); //将找到的关键字替换，加上key属性；
+					$(this).html(newHtml); //更新文章；
+					$('#lists a').hide().filter(":contains('" + (search_input) + "')").show(); //有关键字显示，没有的隐藏、
+				});
+			} else {
+				$('#lists a').hide().filter(":contains('" + (search_input) + "')").show();
+			}
+
+			function clearSelection() { //清空高亮显示的内容
+				$('#lists a').each(function() { //遍历
+					$(this).find('.key').each(function() { //找到所有key属性的元素；
+						$(this).replaceWith($(this).html()); //将他们的属性去掉；
+					});
+				});
+			}
+		}
+		
+		function fanhui(){
+			sessionStorage.clear();
+		}
+		//发布弹窗
+		// function open(){
+		// 	$("#open").show();
+		// }
+	</script>
+</html>

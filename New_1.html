@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>新闻详细</title>
+		<style type="text/css">
+			body {
+				background-color: #d5e9ea;
+			}
+
+			.center {
+				width: 1000px;
+				margin: 0 auto;
+			}
+
+			h1 {
+				text-align: center;
+				font-weight: normal;
+			}
+
+			h3 {
+				text-align: center;
+				font-weight: normal;
+			}
+
+
+			#conten {
+				width: 700px;
+				margin: 0 auto;
+				text-indent: 2em;
+				line-height: 30px;
+				margin-bottom: 10px;
+			}
+			
+			.autgor {
+				text-align: right;
+				font-size: 12px;
+				width: 700px;
+				margin: 0 auto;
+			}
+
+			#fanhui {
+				display: block;
+				margin-top: 50px;
+				width: 230px;
+				height: 50px;
+				background: url(img/JT.png) 30px 12px no-repeat;
+				background-size: 16px;
+				text-align: center;
+				line-height: 50px;
+				text-decoration: none;
+				font-size: 20px;
+				border-radius: 50px;
+				background-color: #fff;
+				color: #000;
+			}
+			.concon{
+				background-color: #fff;
+				padding: 50px 0;
+				padding-top: 20px;
+			}
+		</style>
+		<script src="js/jquery-3.3.1.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="center">
+			<a href="News_List.html" id="fanhui" onclick="fanhui()">返回新闻列表</a>
+			<h1>新闻详细</h1>
+			<div class="concon">
+				<h3 id="title">未获取到新闻</h3>
+				<p id="conten">获取错误获取错误获取错误获取错误获取错误获取错误获取错误获取错误</p>
+				<p class="autgor">作者：<span id="autgor">获取错误</span></p>
+			</div>
+
+
+
+		</div>
+	</body>
+
+	<script type="text/javascript">
+		$(function() {
+			var Newsid = sessionStorage.getItem('Newsid');
+			$.getJSON("data.json", "", function(data) {
+				$.each(data.news, function(i, item) {
+					if (item.id == Newsid) {
+						$("#title").html(item.title);
+						$("#conten").html(item.conten);
+						$("#autgor").html(item.autgor);
+					}
+				})
+			})
+		})
+		function fanhui(){
+			sessionStorage.removeItem('Newsid');
+		}
+	</script>
+</html>

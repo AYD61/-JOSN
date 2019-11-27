@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>登录</title>
+		<link rel="stylesheet" href="css/ts.css">
+		<script src="js/jquery-3.3.1.js"></script>
+		<script src="js/ts.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			html {
+				height: 100%;
+			}
+
+			body {
+				display: flex;
+				/* background: url(img/body_bg.jpg) center bottom no-repeat #d5e9ea; */
+				background-color: #d5e9ea;
+				min-height: 355px;
+				align-items: center;
+				height: 98%;
+				font-size: 20px;
+			}
+
+			.center {
+				width: 31.25rem;
+				margin: 0px auto;
+				text-align: center;
+				box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
+				background-color: #fff;
+			}
+
+			.center .table {
+				width: 400px;
+				padding: 30px 50px;
+				padding-bottom: 50px;
+				/* color: #fff; */
+			}
+
+			.center h1 {
+				text-align: center;
+				color: #4876FF;
+			}
+
+			#zhmm {
+				text-align: left;
+				padding-left: 20px;
+			}
+
+			.center #tj {
+				border: none;
+				width: 110px;
+				height: 40px;
+				font-size: 16px;
+				transition: all 0.5s;
+				background-color: aqua;
+				border-radius: 50px;
+				font-size: 20px;
+			}
+
+			.center #tj:hover {
+				background-color: cornflowerblue;
+				color: #fff;
+			}
+
+			input {
+				border: none;
+				outline: none;
+				border-radius: 50px;
+				background-color: rgb(220, 220, 220);
+				padding: 8px 16px;
+				font-size: 20px;
+			}
+
+			.ts1 {
+				margin-left: 70px;
+				display: inline-block;
+				font-size: 12px;
+				height: 20px;
+				margin-bottom: 3px;
+				color: red;
+			}
+
+			#tj {
+				color: #000;
+				margin: 0 auto;
+				cursor: pointer;
+			}
+
+			a {
+				margin-left: 10px;
+				display: inline-block;
+			}
+		</style>
+
+	</head>
+	<body>
+		<div class="center">
+
+			<div class="table">
+				<h1>用户登录</h1>
+				<div id="zhmm">
+					<span>账号：</span><input type="text" name="user" id="user" value="" onblur="yz()" placeholder="账号:1 密码:123" />
+					<br>
+					<span class="ts1">&nbsp;</span>
+					<br>
+					<span>密码：</span><input type="password" name="pwd" id="pwd" value="" />
+					<br>
+					<br>
+				</div>
+
+				<input type="submit" name="tj" id="tj" value="登录" onclick="log()" />
+				<a href="News_List.html"><button id="tj">跳过登录</button></a>
+			</div>
+			<!-- <div id="json"></div> -->
+			<!-- <div class="ss"></div> -->
+		</div>
+	</body>
+
+	<script>
+
+		// var jsond = document.getElementById("json");
+		// $("#tj").click(log());
+		function yz() {
+			var user = $("#user").val();
+			var reg = /^[0-9a-zA-Z]+$/;
+			var ts1 = $(".ts1");
+			if (user == "") {
+				ts1.html("账号不能为空");
+			} else if (!reg.test(user)) {
+				ts1.html("账号格式错误");
+			} else {
+				ts1.html("&nbsp;");
+			}
+
+		}
+		//按回车键登录
+		$(document).keyup(function(event) {
+			if (event.keyCode == 13) {
+				log();
+			}
+		});
+
+		function log() {
+			var user = $("#user").val();
+			var pwd = $("#pwd").val();
+			var reg = /^[0-9a-zA-Z]+$/;
+			// jQuery.getJSON([url] [data] [success])
+			// $.getJSON("data.json", "", function(data) { //使用$.each方法遍历返回的数据
+			//	 $.each(data.user, function(i, item) {
+			//	 })
+			// })
+			// var str = document.createElement("div");
+			// str.innerHTML = '<br/><p>id：' + item.id + '<br/>名字：' + item.user + '<br/>密码：' + item.pwd + '</p>'
+			// jsond.appendChild(str);
+			if (user == "" || pwd == "") {
+				ts("账号或密码不能为空");
+				return false;
+			} else {
+				$.getJSON("data.json", "", function(data) { //使用$.each方法遍历返回的数据
+					$.each(data.user, function(i, item) {
+						if (!reg.test(user)) {
+							ts("账号格式错误");
+							return false;
+						} else {
+							if (item.id == user && item.pwd == pwd) {
+								ts("登录成功");
+								sessionStorage.setItem('id', item.id);
+								window.location.href = "News_List.html";
+								return false;
+							} else {
+								if (i == data.user.length - 1) {
+									ts("账号或密码错误");
+									return false;
+								}
+							}
+						}
+					})
+				})
+			}
+
+		}
+		$(function() {
+			$("#user").focus();
+		})
+	</script>
+</html>
