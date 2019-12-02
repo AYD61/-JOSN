@@ -4,34 +4,34 @@
 		<meta charset="utf-8">
 		<title>个人中心</title>
 		<link rel="stylesheet" href="css/open.css">
+		<link rel="stylesheet" href="css/ts.css">
 		<style type="text/css">
 			html {
 				height: 100%;
 			}
 
 			body {
-				background: url(img/body_bg.jpg) center bottom no-repeat #d5e9ea;
+				/* 				background: url(img/body_bg.jpg) center bottom no-repeat #d5e9ea; */
+				background-color: #D5E9EA;
 				min-height: 355px;
 				height: 92%;
 				font-size: 20px;
 			}
 
 			.center {
-				width: 460px;
+				/* width: 460px; */
 				margin: 0 auto;
+				margin-bottom: 10px;
 				padding: 25px 20px;
 				padding-top: 1px;
 				background-color: #fff;
 			}
 
-			.center table {
-				margin: 0 auto;
-				margin-left: 100px;
-			}
+			.center table {}
 
 			h1 {
 				font-size: 35px;
-				text-align: center;
+				/* text-align: center; */
 				font-weight: normal;
 			}
 
@@ -41,7 +41,7 @@
 				font-size: 18px;
 				width: 92px;
 				height: 34px;
-				margin: 0 auto;
+				/* margin: 0 auto; */
 				margin-top: 20px;
 				line-height: 34px;
 				text-align: center;
@@ -56,7 +56,7 @@
 				width: 230px;
 				height: 50px;
 				margin-top: 50px;
-				margin-bottom: 50px;
+				margin-bottom: 40px;
 				background: url(img/JT.png) 30px 12px no-repeat;
 				background-color: #fff;
 				text-decoration: none;
@@ -65,13 +65,56 @@
 				color: #000;
 				text-align: center;
 			}
-			.conn{
+
+			.conn {
 				width: 1000px;
 				min-width: 710px;
 				margin: 0 auto;
 			}
+
+			.cc {
+				height: 228px;
+				overflow-y: scroll;
+				margin-bottom: 8px;
+			}
+
+			.lt span {
+				font-size: 16px;
+			}
+
+			.center .lt p {
+				margin: 0;
+			}
+
+			.l {
+				text-align: left;
+				margin-bottom: 5px;
+			}
+
+			.r {
+				text-align: right;
+				margin-bottom: 5px;
+			}
+
+			.sr input {
+				border: none;
+				outline: none;
+				padding: 5px 10px;
+				background-color: #ddd;
+				border-radius: 20px;
+				font-size: 15px;
+			}
+
+			#sr {
+				width: 90%;
+			}
+
+			.center p {
+				margin: 10px 0;
+			}
 		</style>
 		<script src="js/jquery-3.3.1.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/ts.js"></script>
 	</head>
 	<body>
 		<div class="conn">
@@ -95,7 +138,25 @@
 
 				<div class="exit">退出登录</div>
 			</div>
+
+			<div class="center">
+				<p>在线客服</p>
+				<div class="cc">
+					<div class="lt">
+						<div class="l">
+							<p>人工客服</p>
+							<span>请问有什么需要的呢？</span>
+						</div>
+					</div>
+				</div>
+				<div class="sr">
+					<input type="text" name="" id="sr" value="" />
+					<input type="button" name="" id="fs" value="发送" onclick="lt()" />
+				</div>
+			</div>
 		</div>
+
+
 		<div id="open">
 			<div id="con">
 				<p class="bt">退出成功</p>
@@ -127,6 +188,61 @@
 			$("#qued").click(function() {
 				window.location.href = "index.html";
 			})
+
+			$(document).keyup(function(event) {
+				if (event.keyCode == 13) {
+					lt();
+				}
+			});
 		})
+
+		function lt() {
+			var id = sessionStorage.getItem('id');
+			var srk = $("#sr").val();
+			var lt = $(".lt");
+			var lt_r = $(".lt .l").html();
+			if (id) {
+				$.getJSON("data.json", "", function(data) {
+					$.each(data.user, function(i, item) {
+						if (item.id == id) {
+							var nr = $('<div class="r">' +
+								'<p>' + item.name + '：</p>' +
+								'<span > ' + srk + '</span>' +
+								'</div>');
+							var lt_r = new Array();
+							lt_r[0] = $('<div class="l">' +
+									  '<p>假的人工客服：</p>' +
+									  '<span>如果有问题请自行通过度娘解决！</span>' +
+									  '</div>');
+							lt_r[1] = $('<div class="l">' +
+									  '<p>假的人工客服：</p>' +
+									  '<span>GUN！</span>' +
+									  '</div>');
+							lt_r[2] = $('<div class="l">' +
+									  '<p>假的人工客服：</p>' +
+									  '<span>哈赛ki，面对疾风吧！</span>' +
+									  '</div>');
+							lt_r[3] = $('<div class="l">' +
+									  '<p>假的人工客服：</p>' +
+									  '<span>别问我，我什么都不知道！</span>' +
+									  '</div>');
+							lt.append(nr);
+							var rand = parseInt(Math.random() * (3 - 0 + 1) + 0); //parseInt(Math.random() * (上限 - 下限 + 1) + 下限); 随机整数
+							$(".cc").animate({
+								scrollTop: $(".lt").height() + "px"
+							}, 800)
+							setTimeout(function() {
+								lt.append(lt_r[rand]);
+								$(".cc").animate({
+									scrollTop: $(".lt").height() + "px"
+								}, 800)
+							}, 800);
+						}
+					})
+				})
+			} else {
+				ts("您还没有登录哦！");
+			}
+		}
 	</script>
 </html>
