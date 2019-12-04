@@ -73,9 +73,17 @@
 			}
 
 			.cc {
+				width: 975px;
 				height: 228px;
 				overflow-y: scroll;
+				word-wrap: break-word;
+				word-break: break-all;
 				margin-bottom: 8px;
+			}
+
+			.c {
+				overflow: hidden;
+
 			}
 
 			.lt span {
@@ -106,7 +114,7 @@
 			}
 
 			#sr {
-				width: 90%;
+				width: 880px;
 			}
 
 			.center p {
@@ -141,11 +149,14 @@
 
 			<div class="center">
 				<p>在线客服</p>
-				<div class="cc">
-					<div class="lt">
+				<div class="c">
+					<div class="cc">
+						<div class="lt">
 
+						</div>
 					</div>
 				</div>
+
 				<div class="sr">
 					<input type="text" name="" id="sr" value="" />
 					<input type="button" name="" id="fs" value="发送" onclick="lt()" />
@@ -174,7 +185,7 @@
 					}
 				})
 			})
-
+			//退出登录弹窗
 			$("#open").hide();
 			$(".exit").click(function() {
 				sessionStorage.clear();
@@ -214,7 +225,7 @@
 						$.each(data.user, function(i, item) {
 							if (item.id == id) {
 								var nr = $('<div class="r">' +
-									'<p>' + item.name + '：</p>' +
+									'<p>：' + item.name + '</p>' +
 									'<span > ' + srk + '</span>' +
 									'</div>');
 								var lt_l = new Array();
@@ -236,11 +247,11 @@
 									$(".cc").animate({
 										scrollTop: $(".lt").height() + "px"
 									}, 800)
-								}, 800);
+								}, 1000);
 							}
 						})
 					})
-				}else{
+				} else {
 					ts("请输入内容");
 				}
 			} else {
