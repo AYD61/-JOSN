@@ -143,10 +143,7 @@
 				<p>在线客服</p>
 				<div class="cc">
 					<div class="lt">
-						<div class="l">
-							<p>人工客服</p>
-							<span>请问有什么需要的呢？</span>
-						</div>
+
 					</div>
 				</div>
 				<div class="sr">
@@ -194,52 +191,58 @@
 					lt();
 				}
 			});
+
+			var lt_n = $('<div class="l">' +
+				'<p>人工客服：</p>' +
+				'<span>请问有什么需要的呢？</span>' +
+				'</div>');
+			setTimeout(function() {
+				$(".lt").append(lt_n);
+				$(".cc").animate({
+					scrollTop: $(".lt").height() + "px"
+				}, 800)
+			}, 800);
 		})
 
 		function lt() {
 			var id = sessionStorage.getItem('id');
 			var srk = $("#sr").val();
 			var lt = $(".lt");
-			var lt_r = $(".lt .l").html();
 			if (id) {
-				$.getJSON("data.json", "", function(data) {
-					$.each(data.user, function(i, item) {
-						if (item.id == id) {
-							var nr = $('<div class="r">' +
-								'<p>' + item.name + '：</p>' +
-								'<span > ' + srk + '</span>' +
-								'</div>');
-							var lt_r = new Array();
-							lt_r[0] = $('<div class="l">' +
-									  '<p>假的人工客服：</p>' +
-									  '<span>如果有问题请自行通过度娘解决！</span>' +
-									  '</div>');
-							lt_r[1] = $('<div class="l">' +
-									  '<p>假的人工客服：</p>' +
-									  '<span>GUN！</span>' +
-									  '</div>');
-							lt_r[2] = $('<div class="l">' +
-									  '<p>假的人工客服：</p>' +
-									  '<span>哈赛ki，面对疾风吧！</span>' +
-									  '</div>');
-							lt_r[3] = $('<div class="l">' +
-									  '<p>假的人工客服：</p>' +
-									  '<span>别问我，我什么都不知道！</span>' +
-									  '</div>');
-							lt.append(nr);
-							var rand = parseInt(Math.random() * (3 - 0 + 1) + 0); //parseInt(Math.random() * (上限 - 下限 + 1) + 下限); 随机整数
-							$(".cc").animate({
-								scrollTop: $(".lt").height() + "px"
-							}, 800)
-							setTimeout(function() {
-								lt.append(lt_r[rand]);
+				if (srk) {
+					$.getJSON("data.json", "", function(data) {
+						$.each(data.user, function(i, item) {
+							if (item.id == id) {
+								var nr = $('<div class="r">' +
+									'<p>' + item.name + '：</p>' +
+									'<span > ' + srk + '</span>' +
+									'</div>');
+								var lt_l = new Array();
+								lt_l[0] = '如果有问题请自行通过度娘解决！';
+								lt_l[1] = 'GUN!';
+								lt_l[2] = '哈赛ki，面对疾风吧！';
+								lt_l[3] = '别问我，我什么都不知道！';
+								lt.append(nr);
+								var rand = parseInt(Math.random() * (3 - 0 + 1) + 0); //parseInt(Math.random() * (上限 - 下限 + 1) + 下限); 随机整数
+								var ltt = $('<div class="l">' +
+									'<p>假的人工客服：</p>' +
+									'<span>' + lt_l[rand] + '</span>' +
+									'</div>');
 								$(".cc").animate({
 									scrollTop: $(".lt").height() + "px"
 								}, 800)
-							}, 800);
-						}
+								setTimeout(function() {
+									lt.append(ltt);
+									$(".cc").animate({
+										scrollTop: $(".lt").height() + "px"
+									}, 800)
+								}, 800);
+							}
+						})
 					})
-				})
+				}else{
+					ts("请输入内容");
+				}
 			} else {
 				ts("您还没有登录哦！");
 			}
