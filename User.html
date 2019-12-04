@@ -73,18 +73,16 @@
 			}
 
 			.cc {
-				width: 975px;
 				height: 228px;
 				overflow-y: scroll;
 				word-wrap: break-word;
 				word-break: break-all;
 				margin-bottom: 8px;
 			}
-
-			.c {
-				overflow: hidden;
-
+			.cc::-webkit-scrollbar{
+				width: 0;
 			}
+
 
 			.lt span {
 				font-size: 16px;
@@ -211,7 +209,7 @@
 				$(".lt").append(lt_n);
 				$(".cc").animate({
 					scrollTop: $(".lt").height() + "px"
-				}, 800)
+				}, 300)
 			}, 800);
 		})
 
@@ -241,12 +239,12 @@
 									'</div>');
 								$(".cc").animate({
 									scrollTop: $(".lt").height() + "px"
-								}, 800)
+								}, 300)
 								setTimeout(function() {
 									lt.append(ltt);
 									$(".cc").animate({
 										scrollTop: $(".lt").height() + "px"
-									}, 800)
+									}, 300)
 								}, 1000);
 							}
 						})
